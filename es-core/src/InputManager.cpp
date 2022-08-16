@@ -72,13 +72,13 @@ void InputManager::init()
 		addJoystickByDeviceIndex(i);
 	}
 
-	mKeyboardInputConfig = new InputConfig(DEVICE_KEYBOARD, "Keyboard", KEYBOARD_GUID_STRING);
+	mKeyboardInputConfig = new InputConfig(DEVICE_KEYBOARD, "Keyboard", KEYBOARD_GUID_STRING, 0, 0);
 	loadInputConfig(mKeyboardInputConfig);
 
 	SDL_USER_CECBUTTONDOWN = SDL_RegisterEvents(2);
 	SDL_USER_CECBUTTONUP   = SDL_USER_CECBUTTONDOWN + 1;
 	CECInput::init();
-	mCECInputConfig = new InputConfig(DEVICE_CEC, "CEC", CEC_GUID_STRING);
+	mCECInputConfig = new InputConfig(DEVICE_CEC, "CEC", CEC_GUID_STRING, 0, 0);
 	loadInputConfig(mCECInputConfig);
 }
 
@@ -97,8 +97,11 @@ void InputManager::addJoystickByDeviceIndex(int id)
 	char guid[65];
 	SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joy), guid, 65);
 
+	int vendorId = SDL_JoystickGetVendor(joy);
+	int productId = SDL_JoystickGetProduct(joy);
+
 	// create the InputConfig
-	mInputConfigs[joyId] = new InputConfig(joyId, SDL_JoystickName(joy), guid);
+	mInputConfigs[joyId] = new InputConfig(joyId, SDL_JoystickName(joy), guid, vendorId, productId);
 	if(!loadInputConfig(mInputConfigs[joyId]))
 	{
 		LOG(LogInfo) << "Added unconfigured joystick " << SDL_JoystickName(joy) << " (GUID: " << guid << ", instance ID: " << joyId << ", device index: " << id << ").";

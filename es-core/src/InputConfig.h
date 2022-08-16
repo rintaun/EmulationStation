@@ -96,7 +96,7 @@ public:
 class InputConfig
 {
 public:
-	InputConfig(int deviceId, const std::string& deviceName, const std::string& deviceGUID);
+	InputConfig(int deviceId, const std::string& deviceName, const std::string& deviceGUID, int vendorId, int productId);
 
 	void clear();
 	void mapInput(const std::string& name, Input input);
@@ -127,6 +127,8 @@ private:
 	const int mDeviceId;
 	const std::string mDeviceName;
 	const std::string mDeviceGUID;
+	const int mVendorId;
+	const int mProductId;
 };
 
 #endif // ES_CORE_INPUT_CONFIG_H

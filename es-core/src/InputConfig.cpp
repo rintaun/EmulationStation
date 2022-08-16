@@ -50,7 +50,7 @@ std::string toLower(std::string str)
 }
 //end util functions
 
-InputConfig::InputConfig(int deviceId, const std::string& deviceName, const std::string& deviceGUID) : mDeviceId(deviceId), mDeviceName(deviceName), mDeviceGUID(deviceGUID)
+InputConfig::InputConfig(int deviceId, const std::string& deviceName, const std::string& deviceGUID, int vendorId, int productId) : mDeviceId(deviceId), mDeviceName(deviceName), mDeviceGUID(deviceGUID), mVendorId(vendorId), mProductId(productId)
 {
 }
 
@@ -210,6 +210,14 @@ void InputConfig::writeToXML(pugi::xml_node& parent)
 	{
 		cfg.append_attribute("type") = "joystick";
 		cfg.append_attribute("deviceName") = mDeviceName.c_str();
+	}
+
+	if (mVendorId != 0) {
+		cfg.append_attribute("vendorId") = mVendorId;
+	}
+
+	if (mProductId != 0) {
+		cfg.append_attribute("productId") = mProductId;
 	}
 
 	cfg.append_attribute("deviceGUID") = mDeviceGUID.c_str();
